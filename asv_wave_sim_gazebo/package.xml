@@ -17,6 +17,9 @@
 
   <exec_depend>asv_wave_sim_gazebo_plugins</exec_depend>
   <exec_depend>gazebo_ros</exec_depend>
+  <depend>rospy</depend>
+  <depend>geometry_msgs</depend>
+  <depend>gazebo_msgs</depend>
 
   <export>
     <gazebo_ros gazebo_media_path="${prefix}" />
