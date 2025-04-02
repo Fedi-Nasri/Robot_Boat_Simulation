@@ -1,0 +1,15 @@
+<!DOCTYPE FilterScript>
+<FilterScript>
+ <filter name="Simplification: Quadric Edge Collapse Decimation">
+  <!-- Base: Reduce to 6,000 faces (from ~130,000) -->
+  <Param name="TargetFaceNum" value="6000" type="RichInt" 
+         description="Target number of faces" 
+         tooltip="Lower=faster simulation, Higher=better visuals"/>
+  <Param name="QualityThr" value="0.3" type="RichFloat" 
+         description="Quality threshold"/>
+  <Param name="PreserveBoundary" value="true" type="RichBool" 
+         description="Preserve mesh boundary"/>
+  <Param name="OptimalPlacement" value="true" type="RichBool" 
+         description="Optimal vertex placement"/>
+ </filter>
+</FilterScript>

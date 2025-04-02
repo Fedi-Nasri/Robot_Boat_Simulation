@@ -9,7 +9,7 @@
   <arg name="gui" default="true"/>
   <arg name="recording" default="false"/>
   <arg name="debug" default="false"/>
-  <arg name="verbose" default="false"/>
+  <arg name="verbose" default="true"/>
 
   <!-- Resume the logic in empty_world.launch, over-riding a number of arguments -->
   <include file="$(find gazebo_ros)/launch/empty_world.launch">

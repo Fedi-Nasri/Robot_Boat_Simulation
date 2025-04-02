@@ -1,0 +1,210 @@
+<?xml version="1.0"?>
+<sdf version='1.6'>
+  <model name='boatcleaningc'>
+  <pose>0 0 1 0 0 0</pose>
+  <static>false</static>
+
+
+    <!-- Hydrodynamics plugin -->
+    <plugin filename="libHydrodynamicsPlugin.so" name="hydrodynamics">
+      <!-- Wave Model -->
+      <wave_model>ocean_waves</wave_model>
+      <!-- Hydrodynamics -->
+      <damping_on>true</damping_on>
+      <viscous_drag_on>true</viscous_drag_on>
+      <pressure_drag_on>true</pressure_drag_on>
+      <!-- Markers -->
+      <markers>
+        <update_rate>30</update_rate>
+        <water_patch>false</water_patch>
+        <waterline>false</waterline>
+        <underwater_surface>false</underwater_surface>
+      </markers>
+    </plugin>
+
+
+
+
+
+    <plugin filename="libgz-sim-system-multicopter-motor-model-system.so"
+        name="gz::sim::systems::MulticopterMotorModel">
+  <robotNamespace>boatcleaningc</robotNamespace>
+</plugin>
+    <link name='baseboatclening'>
+
+
+      <inertial>
+        <pose>-0.015242 -1.1e-05 -0.056302 0 -0 0</pose>
+        <mass>1.7321</mass>
+        <inertia>
+          <ixx>0.151771</ixx>
+          <ixy>-3.86024e-05</ixy>
+          <ixz>-0.00771902</ixz>
+          <iyy>0.108848</iyy>
+          <iyz>-2.57208e-05</iyz>
+          <izz>0.165084</izz>
+        </inertia>
+      </inertial>
+      <collision name='baseboatclening_collision'>
+        <pose>0 0 0 0 -0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://boatcleaningc/meshes/baseboatclening.STL</uri>
+          </mesh>
+        </geometry>
+      </collision>
+      <collision name='baseboatclening_fixed_joint_lump__axedroit_collision_1'>
+        <pose>-0.263294 -0.401272 -0.256 -1.5708 -0.001745 -1.5708</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://boatcleaningc/meshes/axedroit.STL</uri>
+          </mesh>
+        </geometry>
+      </collision>
+      <collision name='baseboatclening_fixed_joint_lump__axegauche_collision_2'>
+        <pose>-0.263294 0.398728 -0.256 -1.5708 -0.001745 -1.5708</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://boatcleaningc/meshes/axegauche.STL</uri>
+          </mesh>
+        </geometry>
+      </collision>
+      <visual name='baseboatclening_visual'>
+        <pose>0 0 0 0 -0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://boatcleaningc/meshes/baseboatclening.STL</uri>
+          </mesh>
+        </geometry>
+      </visual>
+      <visual name='baseboatclening_fixed_joint_lump__axedroit_visual_1'>
+        <pose>-0.263294 -0.401272 -0.256 -1.5708 -0.001745 -1.5708</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://boatcleaningc/meshes/axedroit.STL</uri>
+          </mesh>
+        </geometry>
+      </visual>
+      <visual name='baseboatclening_fixed_joint_lump__axegauche_visual_2'>
+        <pose>-0.263294 0.398728 -0.256 -1.5708 -0.001745 -1.5708</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://boatcleaningc/meshes/axegauche.STL</uri>
+          </mesh>
+        </geometry>
+      </visual>
+    </link>
+    <joint name='fandroitjoint' type='revolute'>
+      <pose relative_to='baseboatclening'>-0.268799 -0.401272 -0.256 -0.003442 0 4e-06</pose>
+      <parent>baseboatclening</parent>
+      <child>fandroit</child>
+      <axis>
+        <xyz>1 0 0</xyz>
+        <limit>
+          <lower>-1e+16</lower>
+          <upper>1e+16</upper>
+        </limit>
+        <dynamics>
+          <spring_reference>0</spring_reference>
+          <spring_stiffness>0</spring_stiffness>
+        </dynamics>
+      </axis>
+    </joint>
+    <link name='fandroit'>
+      <pose relative_to='fandroitjoint'>0 0 0 0 -0 0</pose>
+      <inertial>
+        <pose>0.011172 -0 0 0 -0 0</pose>
+        <mass>0.00795786</mass>
+        <inertia>
+          <ixx>3.72711e-06</ixx>
+          <ixy>2.1297e-13</ixy>
+          <ixz>-8.34019e-13</ixz>
+          <iyy>2.39332e-06</iyy>
+          <iyz>-4.61638e-10</iyz>
+          <izz>2.39448e-06</izz>
+        </inertia>
+      </inertial>
+      <collision name='fandroit_collision'>
+        <pose>0 0 0 0 -0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://boatcleaningc/meshes/fandroit.STL</uri>
+          </mesh>
+        </geometry>
+      </collision>
+      <visual name='fandroit_visual'>
+        <pose>0 0 0 0 -0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://boatcleaningc/meshes/fandroit.STL</uri>
+          </mesh>
+        </geometry>
+      </visual>
+    </link>
+    <joint name='fangauchejoint' type='revolute'>
+      <pose relative_to='baseboatclening'>-0.269815 0.398728 -0.256 -0.003442 0 4e-06</pose>
+      <parent>baseboatclening</parent>
+      <child>fangauche</child>
+      <axis>
+        <xyz>1 0 0</xyz>
+        <limit>
+          <lower>-1e+16</lower>
+          <upper>1e+16</upper>
+        </limit>
+        <dynamics>
+          <spring_reference>0</spring_reference>
+          <spring_stiffness>0</spring_stiffness>
+        </dynamics>
+      </axis>
+    </joint>
+    <link name='fangauche'>
+      <pose relative_to='fangauchejoint'>0 0 0 0 -0 0</pose>
+      <inertial>
+        <pose>0.012188 -0 0 0 -0 0</pose>
+        <mass>0.00795786</mass>
+        <inertia>
+          <ixx>3.72711e-06</ixx>
+          <ixy>2.1297e-13</ixy>
+          <ixz>-8.34019e-13</ixz>
+          <iyy>2.39332e-06</iyy>
+          <iyz>-4.61638e-10</iyz>
+          <izz>2.39448e-06</izz>
+        </inertia>
+      </inertial>
+      <collision name='fangauche_collision'>
+        <pose>0 0 0 0 -0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://boatcleaningc/meshes/fangauche.STL</uri>
+          </mesh>
+        </geometry>
+      </collision>
+      <visual name='fangauche_visual'>
+        <pose>0 0 0 0 -0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://boatcleaningc/meshes/fangauche.STL</uri>
+          </mesh>
+        </geometry>
+      </visual>
+    </link>
+    <frame name='axedroitjoint' attached_to='baseboatclening'>
+      <pose>-0.263294 -0.401272 -0.256 -1.5708 -0.001745 -1.5708</pose>
+    </frame>
+    <frame name='axedroit' attached_to='axedroitjoint'/>
+    <frame name='axegauchejoint' attached_to='baseboatclening'>
+      <pose>-0.263294 0.398728 -0.256 -1.5708 -0.001745 -1.5708</pose>
+    </frame>
+    <frame name='axegauche' attached_to='axegauchejoint'/>
+  </model>
+</sdf>
