@@ -10,11 +10,16 @@
     <node name="spawn_boat" pkg="gazebo_ros" type="spawn_model"
           args="-sdf -file $(find asv_wave_sim_gazebo)/models/boatcleaningc/model.sdf -model boatcleaningc -x 0 -y 0 -z 1"/>
 
-    <!-- Start the boat controller node -->
+<!--
+     Start the boat controller node 
     <node name="boat_controller" pkg="asv_wave_sim_gazebo" type="boat_controller.py" output="screen"/>
 
-    <!-- Start teleop_twist_keyboard -->
+    Start teleop_twist_keyboard 
     <node name="teleop_twist_keyboard" pkg="teleop_twist_keyboard" type="teleop_twist_keyboard.py" output="screen">
         <remap from="cmd_vel" to="/boatcleaningc/cmd_vel"/>
     </node>
+-->
+
+    <!-- Launch the fan torque direct node
+    <node name="fan_torque_direct" pkg="asv_wave_sim_gazebo" type="fan_torque_direct.py" output="screen"/> -->
 </launch>

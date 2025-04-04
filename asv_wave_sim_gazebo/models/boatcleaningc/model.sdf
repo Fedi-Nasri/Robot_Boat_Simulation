@@ -11,21 +11,17 @@
       <wave_model>ocean_waves</wave_model>
       <!-- Hydrodynamics -->
       <damping_on>false</damping_on>
->>>>>>> edbdf7a80e934aae9aa052b01a2ed118872e7af8
       <viscous_drag_on>true</viscous_drag_on>
       <pressure_drag_on>true</pressure_drag_on>
       <!-- Markers -->
       <markers>
         <update_rate>10</update_rate>
->>>>>>> edbdf7a80e934aae9aa052b01a2ed118872e7af8
         <water_patch>false</water_patch>
         <waterline>false</waterline>
         <underwater_surface>false</underwater_surface>
       </markers>
     </plugin>
-  
 
->>>>>>> edbdf7a80e934aae9aa052b01a2ed118872e7af8
     <link name='baseboatclening'>
 
 
