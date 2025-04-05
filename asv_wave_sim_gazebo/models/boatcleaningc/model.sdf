@@ -4,30 +4,31 @@
   <pose>0 0 1 0 0 0</pose>
   <static>false</static>
 
-
     <!-- Hydrodynamics plugin -->
     <plugin filename="libHydrodynamicsPlugin.so" name="hydrodynamics">
       <!-- Wave Model -->
       <wave_model>ocean_waves</wave_model>
       <!-- Hydrodynamics -->
-      <damping_on>false</damping_on>
+      <damping_on>true</damping_on>
       <viscous_drag_on>true</viscous_drag_on>
       <pressure_drag_on>true</pressure_drag_on>
       <!-- Markers -->
       <markers>
-        <update_rate>10</update_rate>
+        <update_rate>30</update_rate>
         <water_patch>false</water_patch>
         <waterline>false</waterline>
         <underwater_surface>false</underwater_surface>
       </markers>
     </plugin>
+    <physics type="ode">
+      <max_step_size>0.001</max_step_size>
+      <real_time_factor>1.0</real_time_factor>
+    </physics>
 
     <link name='baseboatclening'>
-
-
       <inertial>
         <pose>-0.015242 -1.1e-05 -0.056302 0 -0 0</pose>
-        <mass>1.7321</mass>
+        <mass>2.7321</mass>
         <inertia>
           <ixx>0.151771</ixx>
           <ixy>-3.86024e-05</ixy>
@@ -64,6 +65,57 @@
           </mesh>
         </geometry>
       </collision>
+      <!-- Added sensor collision elements -->
+      <collision name='baseboatclening_fixed_joint_lump__camera_collision_3'>
+        <pose>0.265 0 0.14 0 -0 0</pose>
+        <geometry>
+          <box>
+            <size>0.05 0.05 0.05</size>
+          </box>
+        </geometry>
+        <surface>
+          <contact>
+            <ode/>
+          </contact>
+          <friction>
+            <ode/>
+          </friction>
+        </surface>
+      </collision>
+      <collision name='baseboatclening_fixed_joint_lump__lidar_center_collision_4'>
+        <pose>0.265 0 0.22 0 -0 0</pose>
+        <geometry>
+          <cylinder>
+            <length>0.05</length>
+            <radius>0.05</radius>
+          </cylinder>
+        </geometry>
+        <surface>
+          <contact>
+            <ode/>
+          </contact>
+          <friction>
+            <ode/>
+          </friction>
+        </surface>
+      </collision>
+      <collision name='baseboatclening_fixed_joint_lump__gps_link_collision_5'>
+        <pose>-0.265 0 0.14 0 -0 0</pose>
+        <geometry>
+          <box>
+            <size>0.05 0.05 0.02</size>
+          </box>
+        </geometry>
+        <surface>
+          <contact>
+            <ode/>
+          </contact>
+          <friction>
+            <ode/>
+          </friction>
+        </surface>
+      </collision>
+
       <visual name='baseboatclening_visual'>
         <pose>0 0 0 0 -0 0</pose>
         <geometry>
@@ -91,7 +143,110 @@
           </mesh>
         </geometry>
       </visual>
+      <!-- Added sensor visual elements -->
+      <visual name='baseboatclening_fixed_joint_lump__camera_visual_3'>
+        <pose>0.265 0 0.14 0 -0 0</pose>
+        <geometry>
+          <box>
+            <size>0.05 0.05 0.05</size>
+          </box>
+        </geometry>
+      </visual>
+      <visual name='baseboatclening_fixed_joint_lump__lidar_center_visual_4'>
+        <pose>0.265 0 0.22 0 -0 0</pose>
+        <geometry>
+          <cylinder>
+            <length>0.05</length>
+            <radius>0.05</radius>
+          </cylinder>
+        </geometry>
+      </visual>
+      <visual name='baseboatclening_fixed_joint_lump__gps_link_visual_5'>
+        <pose>-0.265 0 0.14 0 -0 0</pose>
+        <geometry>
+          <box>
+            <size>0.05 0.05 0.02</size>
+          </box>
+        </geometry>
+      </visual>
+
+      <!-- Added sensors -->
+      <sensor name='camera_sensor' type='camera'>
+        <update_rate>30</update_rate>
+        <camera name='camera'>
+          <horizontal_fov>2.0944</horizontal_fov>
+          <image>
+            <width>640</width>
+            <height>480</height>
+            <format>R8G8B8</format>
+          </image>
+          <clip>
+            <near>0.1</near>
+            <far>100</far>
+          </clip>
+        </camera>
+        <plugin name='camera_controller' filename='libgazebo_ros_camera.so'>
+          <alwaysOn>1</alwaysOn>
+          <updateRate>30</updateRate>
+          <cameraName>camera</cameraName>
+          <frameName>camera</frameName>
+          <imageTopicName>image_raw</imageTopicName>
+          <cameraInfoTopicName>camera_info</cameraInfoTopicName>
+          <hackBaseline>0.07</hackBaseline>
+        </plugin>
+        <pose>0.265 0 0.14 0 -0 0</pose>
+      </sensor>
+
+      <sensor name='lidar' type='ray'>
+        <visualize>1</visualize>
+        <update_rate>40</update_rate>
+        <ray>
+          <scan>
+            <horizontal>
+              <samples>720</samples>
+              <resolution>1</resolution>
+              <min_angle>-3.14159</min_angle>
+              <max_angle>3.14159</max_angle>
+            </horizontal>
+          </scan>
+          <range>
+            <min>0.1</min>
+            <max>10</max>
+            <resolution>0.03</resolution>
+          </range>
+          <noise>
+            <type>gaussian</type>
+            <mean>0</mean>
+            <stddev>0.01</stddev>
+          </noise>
+        </ray>
+        <plugin name='gazebo_ros_laser' filename='libgazebo_ros_laser.so'>
+          <topicName>/scan</topicName>
+          <frameName>lidar_center</frameName>
+        </plugin>
+        <pose>0.265 0 0.22 0 -0 0</pose>
+      </sensor>
+
+      <sensor name='gps_sensor' type='gps'>
+        <update_rate>10</update_rate>
+        <plugin name='gazebo_ros_gps' filename='libgazebo_ros_gps.so'>
+          <ros>
+            <namespace>/</namespace>
+          </ros>
+          <frameName>gps_link</frameName>
+          <topicName>gps/fix</topicName>
+          <velocityTopicName>gps/velocity</velocityTopicName>
+          <gpsReferenceLatitude>43.60345</gpsReferenceLatitude>
+          <gpsReferenceLongitude>1.44283</gpsReferenceLongitude>
+          <gpsReferenceAltitude>150</gpsReferenceAltitude>
+          <gpsReferenceHeading>0</gpsReferenceHeading>
+          <velocityRandomWalk>0.1</velocityRandomWalk>
+          <positionRandomWalk>1.5</positionRandomWalk>
+        </plugin>
+        <pose>-0.265 0 0.14 0 -0 0</pose>
+      </sensor>
     </link>
+
     <joint name='fandroitjoint' type='revolute'>
       <pose relative_to='baseboatclening'>-0.268799 -0.401272 -0.256 -0.003442 0 4e-06</pose>
       <parent>baseboatclening</parent>
@@ -108,6 +263,7 @@
         </dynamics>
       </axis>
     </joint>
+   
     <link name='fandroit'>
       <pose relative_to='fandroitjoint'>0 0 0 0 -0 0</pose>
       <inertial>
@@ -141,6 +297,7 @@
         </geometry>
       </visual>
     </link>
+
     <joint name='fangauchejoint' type='revolute'>
       <pose relative_to='baseboatclening'>-0.269815 0.398728 -0.256 -0.003442 0 4e-06</pose>
       <parent>baseboatclening</parent>
@@ -157,6 +314,7 @@
         </dynamics>
       </axis>
     </joint>
+
     <link name='fangauche'>
       <pose relative_to='fangauchejoint'>0 0 0 0 -0 0</pose>
       <inertial>
@@ -190,6 +348,8 @@
         </geometry>
       </visual>
     </link>
+
+    <!-- Added frames for sensors -->
     <frame name='axedroitjoint' attached_to='baseboatclening'>
       <pose>-0.263294 -0.401272 -0.256 -1.5708 -0.001745 -1.5708</pose>
     </frame>
@@ -198,5 +358,17 @@
       <pose>-0.263294 0.398728 -0.256 -1.5708 -0.001745 -1.5708</pose>
     </frame>
     <frame name='axegauche' attached_to='axegauchejoint'/>
+    <frame name='lidar_center_joint' attached_to='camera'>
+      <pose>0 0 0.08 0 -0 0</pose>
+    </frame>
+    <frame name='lidar_center' attached_to='lidar_center_joint'/>
+    <frame name='camera_joint' attached_to='baseboatclening'>
+      <pose>0.265 0 0.14 0 -0 0</pose>
+    </frame>
+    <frame name='camera' attached_to='camera_joint'/>
+    <frame name='gps_joint' attached_to='baseboatclening'>
+      <pose>-0.265 0 0.14 0 -0 0</pose>
+    </frame>
+    <frame name='gps_link' attached_to='gps_joint'/>
   </model>
 </sdf>
