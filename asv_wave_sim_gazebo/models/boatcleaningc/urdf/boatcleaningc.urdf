@@ -1,0 +1,407 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- This URDF was automatically created by SolidWorks to URDF Exporter! Originally created by Stephen Brawner (brawner@gmail.com) 
+     Commit Version: 1.6.0-4-g7f85cfe  Build Version: 1.6.7995.38578
+     For more information, please see http://wiki.ros.org/sw_urdf_exporter -->
+<robot
+  name="boatcleaningc">
+  <link
+    name="baseboatclening">
+    <inertial>
+      <origin
+        xyz="-0.0129680077841765 1.25727561811617E-06 -0.0543415157249071"
+        rpy="0 0 0" />
+      <mass
+        value="13.5985858196954" />
+      <inertia
+        ixx="0.12499527878428"
+        ixy="8.1696015611578E-07"
+        ixz="-0.00148374605527537"
+        iyy="0.0961950105001574"
+        iyz="8.27994826632574E-06"
+        izz="0.136442575579436" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://boatcleaningc/meshes/baseboatclening.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="1 1 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://boatcleaningc/meshes/baseboatclening.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <link
+    name="axegauche">
+    <inertial>
+      <origin
+        xyz="1.27679435346639E-06 -4.87775281632352E-06 0.0164902272597591"
+        rpy="0 0 0" />
+      <mass
+        value="0.0667653906372772" />
+      <inertia
+        ixx="2.27687846986066E-05"
+        ixy="-1.64564197087163E-09"
+        ixz="-1.94145680803022E-09"
+        iyy="2.27919636489373E-05"
+        iyz="7.33602396572131E-09"
+        izz="1.69008013245686E-05" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://boatcleaningc/meshes/axegauche.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://boatcleaningc/meshes/axegauche.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="axegauchejoint"
+    type="fixed">
+    <origin
+      xyz="-0.263293964432029 0.398727536440511 -0.255999999999994"
+      rpy="-1.5707963267949 -0.0017453292519949 -1.5707963267949" />
+    <parent
+      link="baseboatclening" />
+    <child
+      link="axegauche" />
+    <axis
+      xyz="0 0 0" />
+  </joint>
+  <link
+    name="fangauche">
+    <inertial>
+      <origin
+        xyz="0.0121880649596051 -1.96166660693109E-09 4.45801809634272E-08"
+        rpy="0 0 0" />
+      <mass
+        value="0.00795785659641826" />
+      <inertia
+        ixx="3.72710558894489E-06"
+        ixy="2.12970220347823E-13"
+        ixz="-8.34019260089533E-13"
+        iyy="2.39331655167268E-06"
+        iyz="-4.61638273535348E-10"
+        izz="2.39447831194732E-06" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://boatcleaningc/meshes/fangauche.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://boatcleaningc/meshes/fangauche.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="fangauchejoint"
+    type="continuous">
+    <origin
+      xyz="0 0 -0.0065208"
+      rpy="1.5691 -1.5708 0" />
+    <parent
+      link="axegauche" />
+    <child
+      link="fangauche" />
+    <axis
+      xyz="1 0 0" />
+  </joint>
+  <link
+    name="axedroit">
+    <inertial>
+      <origin
+        xyz="1.27706300609431E-06 -4.87768385248888E-06 0.0164902268079528"
+        rpy="0 0 0" />
+      <mass
+        value="0.0667653874530656" />
+      <inertia
+        ixx="2.2768784169048E-05"
+        ixy="-1.64569925595665E-09"
+        ixz="-1.94169064678752E-09"
+        iyy="2.27919627987871E-05"
+        iyz="7.33603381553706E-09"
+        izz="1.69008005306967E-05" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://boatcleaningc/meshes/axedroit.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://boatcleaningc/meshes/axedroit.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="axedroitjoint"
+    type="fixed">
+    <origin
+      xyz="-0.263293964432035 -0.401272463559541 -0.255999999999994"
+      rpy="-1.5707963267949 -0.00174532925200045 -1.5707963267949" />
+    <parent
+      link="baseboatclening" />
+    <child
+      link="axedroit" />
+    <axis
+      xyz="0 0 0" />
+  </joint>
+  <link
+    name="fandroit">
+    <inertial>
+      <origin
+        xyz="0.0111720649596025 -1.96166084764915E-09 4.45801802140267E-08"
+        rpy="0 0 0" />
+      <mass
+        value="0.0079578565964185" />
+      <inertia
+        ixx="3.72710558894501E-06"
+        ixy="2.12970222312377E-13"
+        ixz="-8.34019270254807E-13"
+        iyy="2.39331655167276E-06"
+        iyz="-4.61638273470614E-10"
+        izz="2.39447831194736E-06" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://boatcleaningc/meshes/fandroit.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://boatcleaningc/meshes/fandroit.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="fandroitjoint"
+    type="continuous">
+    <origin
+      xyz="0 0 -0.0055047"
+      rpy="1.5691 -1.5708 0" />
+    <parent
+      link="axedroit" />
+    <child
+      link="fandroit" />
+    <axis
+      xyz="1 0 0" />
+  </joint>
+  <link name="camera">
+<inertial>
+<origin xyz="0 0 0" rpy="0 0 0" />
+<mass value="0.1" />
+<inertia ixx="0.0001" ixy="0" ixz="0" iyy="0.0001" iyz="0" izz="0.0001" />
+</inertial>
+<visual>
+<origin xyz="0 0 0" rpy="0 0 0" />
+<geometry>
+<box size="0.05 0.05 0.05" />
+</geometry>
+<material name="camera_material">
+<color rgba="0 0 0 1" /> <!-- Black color for the camera -->
+</material>
+</visual>
+<collision>
+<origin xyz="0 0 0" rpy="0 0 0" />
+<geometry>
+<box size="0.05 0.05 0.05" />
+</geometry>
+</collision>
+</link>
+<!-- Add the joint to connect the camera to the base of the boat -->
+<joint name="camera_joint" type="fixed">
+<origin xyz="0.265 0 0.14" rpy="0 0 0"/>
+<parent link="baseboatclening" />
+<child link="camera" />
+<axis xyz="0 0 0" />
+</joint>
+<!-- Gazebo plugin for the camera -->
+<gazebo reference="camera">
+<sensor type="camera" name="camera_sensor">
+<update_rate>30</update_rate> <!-- Camera frame rate -->
+<camera name="camera">
+<horizontal_fov>2.0944</horizontal_fov> <!-- 120 degrees in radians -->
+<image>
+<width>640</width>
+<height>480</height>
+<format>R8G8B8</format>
+</image>
+<clip>
+<near>0.1</near>
+<far>100</far>
+</clip>
+</camera>
+<plugin name="camera_controller" filename="libgazebo_ros_camera.so">
+<alwaysOn>true</alwaysOn>
+<updateRate>30</updateRate>
+<cameraName>camera</cameraName>
+
+<frameName>camera</frameName>
+<imageTopicName>image_raw</imageTopicName>
+<cameraInfoTopicName>camera_info</cameraInfoTopicName>
+<hackBaseline>0.07</hackBaseline>
+</plugin>
+</sensor>
+</gazebo>
+
+<!-- LiDAR Sensor -->
+<link name="lidar_center">
+<inertial>
+<mass value="0.1"/>
+<origin xyz="0 0 0"/>
+<inertia ixx="0.001" ixy="0" ixz="0" iyy="0.001" iyz="0" izz="0.001"/>
+</inertial>
+<visual>
+<geometry>
+<cylinder length="0.05" radius="0.05"/>
+</geometry>
+<material name="lidar_blue">
+<color rgba="0 0 0.8 1"/>
+</material>
+</visual>
+<collision>
+<geometry>
+<cylinder length="0.05" radius="0.05"/>
+</geometry>
+</collision>
+</link>
+<!-- Joint to connect the LiDAR to the camera -->
+<joint name="lidar_center_joint" type="fixed">
+<parent link="camera"/> <!-- Connect to the camera link -->
+<child link="lidar_center"/>
+<!--
+Position relative to the camera:
+X = 0 (centered)
+Y = 0 (centered)
+Z = 10 cm upward
+-->
+<origin xyz="0 0 0.08" rpy="0 0 0"/>
+</joint>
+<!-- Gazebo Configuration -->
+<gazebo reference="lidar_center">
+<sensor type="ray" name="lidar">
+<pose>0 0 0 0 0 0</pose>
+<visualize>true</visualize>
+<update_rate>40</update_rate>
+<ray>
+<scan>
+
+<horizontal>
+<samples>720</samples>
+<resolution>1</resolution>
+<min_angle>-3.14159</min_angle> <!-- -180° -->
+<max_angle>3.14159</max_angle> <!-- +180° -->
+</horizontal>
+</scan>
+<range>
+<min>0.1</min>
+<max>10.0</max>
+<resolution>0.03</resolution>
+</range>
+<noise>
+<type>gaussian</type>
+<mean>0.0</mean>
+<stddev>0.01</stddev>
+</noise>
+</ray>
+<plugin name="gazebo_ros_laser" filename="libgazebo_ros_laser.so">
+<topicName>/scan</topicName>
+<frameName>lidar_center</frameName>
+</plugin>
+</sensor>
+</gazebo>
+
+<plugin name="diff_drive_controller" filename="libgazebo_ros_diff_drive.so">
+  <ros>
+    <namespace>/</namespace>
+    <remapping>cmd_vel:=cmd_vel</remapping>
+  </ros>
+
+  <updateRate>50.0</updateRate>
+  <leftJoint>fangauchejoint</leftJoint>
+  <rightJoint>fandroitjoint</rightJoint>
+
+  <wheelSeparation>0.8</wheelSeparation> <!-- Adjust based on real distance between wheels -->
+  <wheelDiameter>0.1</wheelDiameter>     <!-- Adjust based on actual wheel size -->
+
+  <robotBaseFrame>baseboatclening</robotBaseFrame>
+  <odomFrame>odom</odomFrame>
+  <publishWheelTF>true</publishWheelTF>
+  <publishTf>true</publishTf>
+  <publishWheelJointState>true</publishWheelJointState>
+
+  <topicName>odom</topicName>
+  <cmdVelTopic>cmd_vel</cmdVelTopic>
+</plugin>
+
+</robot>

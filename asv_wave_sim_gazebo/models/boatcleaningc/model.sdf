@@ -226,25 +226,6 @@
         </plugin>
         <pose>0.265 0 0.22 0 -0 0</pose>
       </sensor>
-
-      <sensor name='gps_sensor' type='gps'>
-        <update_rate>10</update_rate>
-        <plugin name='gazebo_ros_gps' filename='libgazebo_ros_gps.so'>
-          <ros>
-            <namespace>/</namespace>
-          </ros>
-          <frameName>gps_link</frameName>
-          <topicName>gps/fix</topicName>
-          <velocityTopicName>gps/velocity</velocityTopicName>
-          <gpsReferenceLatitude>43.60345</gpsReferenceLatitude>
-          <gpsReferenceLongitude>1.44283</gpsReferenceLongitude>
-          <gpsReferenceAltitude>150</gpsReferenceAltitude>
-          <gpsReferenceHeading>0</gpsReferenceHeading>
-          <velocityRandomWalk>0.1</velocityRandomWalk>
-          <positionRandomWalk>1.5</positionRandomWalk>
-        </plugin>
-        <pose>-0.265 0 0.14 0 -0 0</pose>
-      </sensor>
     </link>
 
     <joint name='fandroitjoint' type='revolute'>
@@ -366,9 +347,30 @@
       <pose>0.265 0 0.14 0 -0 0</pose>
     </frame>
     <frame name='camera' attached_to='camera_joint'/>
-    <frame name='gps_joint' attached_to='baseboatclening'>
-      <pose>-0.265 0 0.14 0 -0 0</pose>
-    </frame>
-    <frame name='gps_link' attached_to='gps_joint'/>
+
+
+    <plugin name="diff_drive_controller" filename="libgazebo_ros_diff_drive.so">
+      <ros>
+        <namespace>/</namespace>
+        <remapping>cmd_vel:=cmd_vel</remapping>
+      </ros>
+
+      <updateRate>50.0</updateRate>
+      <leftJoint>fangauchejoint</leftJoint>
+      <rightJoint>fandroitjoint</rightJoint>
+
+      <wheelSeparation>0.8</wheelSeparation> <!-- Adjust based on real distance between wheels -->
+      <wheelDiameter>0.1</wheelDiameter>     <!-- Adjust based on actual wheel size -->
+
+      <robotBaseFrame>baseboatclening</robotBaseFrame>
+      <odomFrame>odom</odomFrame>
+      <publishWheelTF>true</publishWheelTF>
+      <publishTf>true</publishTf>
+      <publishWheelJointState>true</publishWheelJointState>
+
+      <topicName>odom</topicName>
+      <cmdVelTopic>cmd_vel</cmdVelTopic>
+    </plugin>
+
   </model>
 </sdf>
