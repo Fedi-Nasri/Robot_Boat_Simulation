@@ -25,6 +25,22 @@
       <real_time_factor>1.0</real_time_factor>
     </physics>
 
+      <plugin name="imu_odometry" filename="libgazebo_ros_planar_move.so">
+        <!-- Frame Configuration -->
+        <frame_id>baseboatclening</frame_id>
+        <odom_topic>odom</odom_topic>
+        <odom_frame_id>odom</odom_frame_id>
+        
+        <!-- Boat-Specific Tuning -->
+        <publish_odom_tf>true</publish_odom_tf>
+        <xy_noise>0.1</xy_noise>       <!-- Higher for water movement -->
+        <yaw_noise>0.05</yaw_noise>    <!-- Increased for wave effects -->
+        
+        <!-- Required for boats -->
+        <twist_topic>cmd_vel</twist_topic>  <!-- For velocity integration -->
+        <static_z>true</static_z>           <!-- Lock Z-axis for surface vehicles -->
+      </plugin>
+
     <link name='baseboatclening'>
       <inertial>
         <pose>-0.015242 -1.1e-05 -0.056302 0 -0 0</pose>
@@ -226,6 +242,29 @@
         </plugin>
         <pose>0.265 0 0.22 0 -0 0</pose>
       </sensor>
+      
+      <!--  IMU sensor-->
+
+      <sensor name="imu_sensor" type="imu">
+      <always_on>true</always_on>
+      <update_rate>100</update_rate>
+      <visualize>true</visualize>
+      <topic>imu/data</topic>
+      <plugin filename="libgazebo_ros_imu_sensor.so" name="imu_plugin">
+        <topicName>imu/data</topicName>
+        <bodyName>imu_link</bodyName>
+        <updateRateHZ>10.0</updateRateHZ>
+        <gaussianNoise>0.0</gaussianNoise>
+        <xyzOffset>0 0 0</xyzOffset>
+        <rpyOffset>0 0 0</rpyOffset>
+        <frameName>imu_link</frameName>
+        <initialOrientationAsReference>false</initialOrientationAsReference>
+      </plugin>
+      <pose>0 0 0 0 0 0</pose>
+      </sensor>
+      <!--ENd IMU Sensor -->
+
+
     </link>
 
     <joint name='fandroitjoint' type='revolute'>
