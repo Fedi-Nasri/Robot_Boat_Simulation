@@ -1,0 +1,12 @@
+joint_state_controller:
+  type: joint_state_controller/JointStateController
+  publish_rate: 50
+
+fangauche_controller:
+  type: effort_controllers/JointEffortController
+  joint: fangauche_joint
+
+fandroit_controller:
+  type: effort_controllers/JointEffortController
+  joint: fandroit_joint
+

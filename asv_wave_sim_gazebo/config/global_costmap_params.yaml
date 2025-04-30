@@ -1,0 +1,5 @@
+global_costmap:
+  global_frame: map          # Matches your gmapping map frame
+  robot_base_frame: baseboatclening  # Matches your URDF base link
+  update_frequency: 1.0      # Update at 1 Hz
+  static_map: true           # Use the pre-built map from gmapping

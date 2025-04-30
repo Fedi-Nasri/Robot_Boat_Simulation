@@ -24,11 +24,13 @@
       <max_step_size>0.001</max_step_size>
       <real_time_factor>1.0</real_time_factor>
     </physics>
+    
+   
 
     <link name='baseboatclening'>
       <inertial>
         <pose>-0.015242 -1.1e-05 -0.056302 0 -0 0</pose>
-        <mass>2.7321</mass>
+        <mass>1.7321</mass>
         <inertia>
           <ixx>0.151771</ixx>
           <ixy>-3.86024e-05</ixy>
@@ -99,22 +101,7 @@
           </friction>
         </surface>
       </collision>
-      <collision name='baseboatclening_fixed_joint_lump__gps_link_collision_5'>
-        <pose>-0.265 0 0.14 0 -0 0</pose>
-        <geometry>
-          <box>
-            <size>0.05 0.05 0.02</size>
-          </box>
-        </geometry>
-        <surface>
-          <contact>
-            <ode/>
-          </contact>
-          <friction>
-            <ode/>
-          </friction>
-        </surface>
-      </collision>
+      
 
       <visual name='baseboatclening_visual'>
         <pose>0 0 0 0 -0 0</pose>
@@ -161,14 +148,7 @@
           </cylinder>
         </geometry>
       </visual>
-      <visual name='baseboatclening_fixed_joint_lump__gps_link_visual_5'>
-        <pose>-0.265 0 0.14 0 -0 0</pose>
-        <geometry>
-          <box>
-            <size>0.05 0.05 0.02</size>
-          </box>
-        </geometry>
-      </visual>
+      
 
       <!-- Added sensors -->
       <sensor name='camera_sensor' type='camera'>
@@ -226,6 +206,8 @@
         </plugin>
         <pose>0.265 0 0.22 0 -0 0</pose>
       </sensor>
+
+    
     </link>
 
     <joint name='fandroitjoint' type='revolute'>
@@ -347,6 +329,6 @@
       <pose>0.265 0 0.14 0 -0 0</pose>
     </frame>
     <frame name='camera' attached_to='camera_joint'/>
-
+   
   </model>
 </sdf>

@@ -23,8 +23,7 @@ include(${CGAL_USE_FILE})
 
 ###############################################################################
 # Other dependencies...
-
-find_package(catkin REQUIRED COMPONENTS gazebo_ros)
+find_package(catkin REQUIRED COMPONENTS gazebo_ros tf nav_msgs gazebo_msgs rosgraph_msgs)
 find_package(gazebo REQUIRED)
 find_package(Eigen3 REQUIRED)
 find_package(TBB REQUIRED)
@@ -42,6 +41,10 @@ catkin_package(
     WavefieldVisualPlugin
   DEPENDS
     gazebo_ros
+    tf
+    nav_msgs
+    gazebo_msgs
+    rosgraph_msgs  # Optional, for clarity
 )
 
 include_directories(
@@ -258,6 +261,11 @@ add_dependencies(WaveMsgSubscriber
 )
 
 list(APPEND ASV_WAVE_GAZEBO_EXECUTABLES_LIST WaveMsgSubscriber)
+
+add_executable(odometry_publisher src/odometry_publisher.cpp)
+target_link_libraries(odometry_publisher ${catkin_LIBRARIES})
+target_compile_options(odometry_publisher PRIVATE "-Wno-unknown-pragmas")
+list(APPEND ASV_WAVE_GAZEBO_EXECUTABLES_LIST odometry_publisher)
 
 ############################################################################### 
 # Tests...

@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- This URDF was automatically created by SolidWorks to URDF Exporter! Originally created by Stephen Brawner (brawner@gmail.com) 
+     Commit Version: 1.6.0-4-g7f85cfe  Build Version: 1.6.7995.38578
+     For more information, please see http://wiki.ros.org/sw_urdf_exporter -->
+<robot
+  name="boatcleaningg">
+  <link
+    name="baseboatclening">
+    <inertial>
+      <origin
+        xyz="0.291482354966402 0.0870598960098232 1.68366201575933"
+        rpy="0 0 0" />
+      <mass
+        value="13.2107912938572" />
+      <inertia
+        ixx="0.0958997996659019"
+        ixy="1.00833029988145E-05"
+        ixz="1.21620939710939E-06"
+        iyy="0.13622584599347"
+        iyz="-0.00147964544413288"
+        izz="0.124589315343275" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://boatcleaningg/meshes/baseboatclening.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="1 1 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://boatcleaningg/meshes/baseboatclening.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <link
+    name="axegauche">
+    <inertial>
+      <origin
+        xyz="0.00873527134160068 0.000331307956085491 0.0185037745550877"
+        rpy="0 0 0" />
+      <mass
+        value="0.260662654122487" />
+      <inertia
+        ixx="0.000219882521629366"
+        ixy="-1.97695515741402E-07"
+        ixz="-2.05764499145904E-06"
+        iyy="0.000170374195889187"
+        iyz="-9.03282563397798E-07"
+        izz="0.00013115676220976" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://boatcleaningg/meshes/axegauche.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://boatcleaningg/meshes/axegauche.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="axegauchejoint"
+    type="fixed">
+    <origin
+      xyz="0.690184331806614 -1.41938785829127 -0.119787998985034"
+      rpy="0 0 -1.5707963267949" />
+    <parent
+      link="baseboatclening" />
+    <child
+      link="axegauche" />
+    <axis
+      xyz="0 0 0" />
+  </joint>
+  <link
+    name="fangauche">
+    <inertial>
+      <origin
+        xyz="0.0121880649596051 -1.96166660693109E-09 4.45801809495494E-08"
+        rpy="0 0 0" />
+      <mass
+        value="0.00795785659641827" />
+      <inertia
+        ixx="3.72710558894489E-06"
+        ixy="2.12970220296124E-13"
+        ixz="-8.34019260551591E-13"
+        iyy="2.39331655167268E-06"
+        iyz="-4.61638273535231E-10"
+        izz="2.39447831194732E-06" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://boatcleaningg/meshes/fangauche.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://boatcleaningg/meshes/fangauche.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="fangauchejoint"
+    type="continuous">
+    <origin
+      xyz="0 0 0"
+      rpy="0 0 0" />
+    <parent
+      link="axegauche" />
+    <child
+      link="fangauche" />
+    <axis
+      xyz="1 0 0" />
+  </joint>
+  <link
+    name="axedroit">
+    <inertial>
+      <origin
+        xyz="0.00771927083304313 0.000331307880604745 0.0185037747944475"
+        rpy="0 0 0" />
+      <mass
+        value="0.260662649795333" />
+      <inertia
+        ixx="0.000219882521227834"
+        ixy="-1.97696190660657E-07"
+        ixz="-2.05764496393914E-06"
+        iyy="0.000170374195884343"
+        iyz="-9.03282583437017E-07"
+        izz="0.000131156761551184" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://boatcleaningg/meshes/axedroit.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://boatcleaningg/meshes/axedroit.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="axedroitjoint"
+    type="fixed">
+    <origin
+      xyz="-0.109815668193448 -1.42040385829127 -0.119787998985034"
+      rpy="0 0 -1.5707963267949" />
+    <parent
+      link="baseboatclening" />
+    <child
+      link="axedroit" />
+    <axis
+      xyz="0 0 0" />
+  </joint>
+  <link
+    name="fandroit">
+    <inertial>
+      <origin
+        xyz="0.0111720649596025 -1.96166083377136E-09 4.45801802001489E-08"
+        rpy="0 0 0" />
+      <mass
+        value="0.0079578565964185" />
+      <inertia
+        ixx="3.72710558894501E-06"
+        ixy="2.12970222312377E-13"
+        ixz="-8.34019270266116E-13"
+        iyy="2.39331655167276E-06"
+        iyz="-4.61638273470576E-10"
+        izz="2.39447831194736E-06" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://boatcleaningg/meshes/fandroit.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://boatcleaningg/meshes/fandroit.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="fandroitjoint"
+    type="continuous">
+    <origin
+      xyz="0 0 0"
+      rpy="0 0 0" />
+    <parent
+      link="axedroit" />
+    <child
+      link="fandroit" />
+    <axis
+      xyz="1 0 0" />
+  </joint>
+</robot>

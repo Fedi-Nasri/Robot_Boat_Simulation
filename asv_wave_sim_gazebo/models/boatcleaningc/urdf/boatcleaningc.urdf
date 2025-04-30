@@ -26,7 +26,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://boatcleaningc/meshes/baseboatclening.STL" />
+          filename="package://asv_wave_sim_gazebo/models/boatcleaningc/meshes/baseboatclening.STL" />
       </geometry>
       <material
         name="">
@@ -40,7 +40,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://boatcleaningc/meshes/baseboatclening.STL" />
+          filename="package://asv_wave_sim_gazebo/models/boatcleaningc/meshes/baseboatclening.STL" />
       </geometry>
     </collision>
   </link>
@@ -66,7 +66,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://boatcleaningc/meshes/axegauche.STL" />
+          filename="package://asv_wave_sim_gazebo/models/boatcleaningc/meshes/axegauche.STL" />
       </geometry>
       <material
         name="">
@@ -80,7 +80,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://boatcleaningc/meshes/axegauche.STL" />
+          filename="package://asv_wave_sim_gazebo/models/boatcleaningc/meshes/axegauche.STL" />
       </geometry>
     </collision>
   </link>
@@ -119,7 +119,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://boatcleaningc/meshes/fangauche.STL" />
+          filename="package://asv_wave_sim_gazebo/models/boatcleaningc/meshes/fangauche.STL" />
       </geometry>
       <material
         name="">
@@ -133,7 +133,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://boatcleaningc/meshes/fangauche.STL" />
+          filename="package://asv_wave_sim_gazebo/models/boatcleaningc/meshes/fangauche.STL" />
       </geometry>
     </collision>
   </link>
@@ -172,7 +172,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://boatcleaningc/meshes/axedroit.STL" />
+          filename="package://asv_wave_sim_gazebo/models/boatcleaningc/meshes/axedroit.STL" />
       </geometry>
       <material
         name="">
@@ -186,7 +186,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://boatcleaningc/meshes/axedroit.STL" />
+          filename="package://asv_wave_sim_gazebo/models/boatcleaningc/meshes/axedroit.STL" />
       </geometry>
     </collision>
   </link>
@@ -225,7 +225,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://boatcleaningc/meshes/fandroit.STL" />
+          filename="package://asv_wave_sim_gazebo/models/boatcleaningc/meshes/fandroit.STL" />
       </geometry>
       <material
         name="">
@@ -239,10 +239,36 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://boatcleaningc/meshes/fandroit.STL" />
+          filename="package://asv_wave_sim_gazebo/models/boatcleaningc/meshes/fandroit.STL" />
       </geometry>
     </collision>
   </link>
+  
+  
+  <gazebo reference="baseboatclening">
+    <plugin name="hydrodynamics" filename="libHydrodynamicsPlugin.so">
+      <!-- Wave Model -->
+      <wave_model>ocean_waves</wave_model>
+      <!-- Hydrodynamics -->
+      <damping_on>true</damping_on>
+      <viscous_drag_on>true</viscous_drag_on>
+      <pressure_drag_on>true</pressure_drag_on>
+      <!-- Markers -->
+      <markers>
+        <update_rate>30</update_rate>
+        <water_patch>false</water_patch>
+        <waterline>false</waterline>
+        <underwater_surface>false</underwater_surface>
+      </markers>
+    </plugin>
+   <plugin name="odom_plugin" filename="libgazebo_ros_p3d.so">
+  <frameName>odom</frameName>
+  <parentFrameName>map</parentFrameName>
+</plugin>
+   
+  </gazebo>
+  
+  
   <joint
     name="fandroitjoint"
     type="continuous">
@@ -381,27 +407,5 @@ Z = 10 cm upward
 </sensor>
 </gazebo>
 
-<plugin name="diff_drive_controller" filename="libgazebo_ros_diff_drive.so">
-  <ros>
-    <namespace>/</namespace>
-    <remapping>cmd_vel:=cmd_vel</remapping>
-  </ros>
-
-  <updateRate>50.0</updateRate>
-  <leftJoint>fangauchejoint</leftJoint>
-  <rightJoint>fandroitjoint</rightJoint>
-
-  <wheelSeparation>0.8</wheelSeparation> <!-- Adjust based on real distance between wheels -->
-  <wheelDiameter>0.1</wheelDiameter>     <!-- Adjust based on actual wheel size -->
-
-  <robotBaseFrame>baseboatclening</robotBaseFrame>
-  <odomFrame>odom</odomFrame>
-  <publishWheelTF>true</publishWheelTF>
-  <publishTf>true</publishTf>
-  <publishWheelJointState>true</publishWheelJointState>
-
-  <topicName>odom</topicName>
-  <cmdVelTopic>cmd_vel</cmdVelTopic>
-</plugin>
 
 </robot>

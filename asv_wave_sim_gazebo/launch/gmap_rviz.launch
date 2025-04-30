@@ -1,17 +1,12 @@
 <launch>
   <!-- Use simulation time -->
   <param name="use_sim_time" value="true"/>
-
-  <!-- Gmapping node -->
-  <node pkg="gmapping" type="slam_gmapping" name="slam_gmapping" output="screen">
-    <param name="base_frame" value="baseboatclening"/>
-    <param name="odom_frame" value="odom"/>
-    <param name="map_update_interval" value="2.0"/>
-    <param name="maxUrange" value="10.0"/>
-    <param name="delta" value="0.05"/>
-    <param name="particles" value="30"/>
-    <remap from="scan" to="/scan"/>
-  </node>
+  
+  
+  
+  <node pkg="asv_wave_sim_gazebo_plugins" type="odometry_publisher" name="odometry_publisher" output="screen"/>
+  
+  
   
   <param
     name="robot_description"
@@ -30,7 +25,38 @@
     name="rviz"
     pkg="rviz"
     type="rviz"
-    args="-d $(find boatcleaningc)/models/boatcleaningc/urdf.rviz" />
+    args="-d $(find asv_wave_sim_gazebo)/config/config.rviz" />
+    
+
+  
+  <!-- Gmapping node -->
+  <node pkg="gmapping" type="slam_gmapping" name="slam_gmapping" output="screen">
+    <param name="base_frame" value="baseboatclening"/>
+    <param name="odom_frame" value="odom"/>
+    <param name="map_update_interval" value="2.0"/>
+    <param name="maxUrange" value="10.0"/>
+    <param name="delta" value="0.05"/>
+    <param name="particles" value="30"/>
+    <remap from="odom" to="/boatcleaningc/odom"/>
+    <remap from="scan" to="/scan"/>
+    <remap from="map" to="/gmapping_map"/>
+  </node>
+
+    <!-- Map server -->
+  <node pkg="map_server" name="map_server" type="map_server" args="$(find asv_wave_sim_gazebo)/maps/map.yaml"/>
+  
+  
+    <!-- Boat Controller -->
+  <node pkg="asv_wave_sim_gazebo" type="boatt.py" name="boat_controller_node" output="screen"/>
+
+  <!-- Move_base -->
+  <node pkg="move_base" type="move_base" name="move_base" output="screen">
+    <rosparam file="$(find asv_wave_sim_gazebo)/config/costmap_common_params.yaml" command="load" ns="global_costmap"/>
+    <rosparam file="$(find asv_wave_sim_gazebo)/config/costmap_common_params.yaml" command="load" ns="local_costmap"/>
+    <rosparam file="$(find asv_wave_sim_gazebo)/config/global_costmap_params.yaml" command="load"/>
+    <rosparam file="$(find asv_wave_sim_gazebo)/config/local_costmap_params.yaml" command="load"/>
+    <rosparam file="$(find asv_wave_sim_gazebo)/config/base_local_planner_params.yaml" command="load"/>
+  </node>
     
     
 </launch>

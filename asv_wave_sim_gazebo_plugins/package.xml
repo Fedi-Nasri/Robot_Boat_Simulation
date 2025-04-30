@@ -20,7 +20,12 @@
   <build_depend>gazebo_ros</build_depend>
   
   <exec_depend>cgal</exec_depend>
-  <exec_depend>gazebo_ros</exec_depend>
+  <exec_depend>gazebo_ros</exec_depend> 
+  
+  <depend>tf</depend>
+  <depend>nav_msgs</depend>
+  <depend>gazebo_msgs</depend>
+  <depend>rosgraph_msgs</depend>
 
   <export>
     <gazebo_ros plugin_path="${prefix}/lib"/>

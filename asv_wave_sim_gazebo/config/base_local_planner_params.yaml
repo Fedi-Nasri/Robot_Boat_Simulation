@@ -1,0 +1,13 @@
+TrajectoryPlannerROS:
+  max_vel_x: 0.5           # Max forward speed (m/s)
+  min_vel_x: 0.1           # Min forward speed (m/s)
+  max_vel_theta: 0.5       # Max rotational speed (rad/s)
+  acc_lim_x: 0.5           # Acceleration limit (m/s²)
+  acc_lim_theta: 0.5       # Angular acceleration limit (rad/s²)
+  
+  holonomic_robot: false   # Boat can't move sideways
+  
+  yaw_goal_tolerance: 0.1  # ±0.1 rad (~6°) tolerance for orientation
+  xy_goal_tolerance: 0.2   # ±0.2 m tolerance for position
+  
+  meter_scoring: true      # Use meter-based scoring for paths

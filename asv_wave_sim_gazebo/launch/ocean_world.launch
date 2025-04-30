@@ -22,4 +22,19 @@
     <arg name="debug" value="$(arg debug)" />
     <arg name="verbose" value="$(arg verbose)" />
   </include>
+  
+  <!-- Load the controller configuration -->
+<rosparam file="$(find asv_wave_sim_gazebo)/config/controllers.yaml" command="load" />
+
+<!-- Start the controllers -->
+<node name="controller_spawner" pkg="controller_manager" type="spawner"
+      args="joint_state_controller fandroit_controller fangauche_controller"
+      output="screen"/>
+
+  
+         
+ <node name="spawn_boat" pkg="gazebo_ros" type="spawn_model" output="screen"
+        args="-file $(find asv_wave_sim_gazebo)/models/boatcleaningc/model.sdf -sdf -model boatcleaningc -x -0.0 -y 0.0 -z 0.5" />
+
+ 
 </launch>
