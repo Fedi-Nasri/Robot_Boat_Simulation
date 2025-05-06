@@ -1,0 +1,4 @@
+<launch>
+  <node pkg="asv_wave_sim_gazebo" type="firebase_manager.py" name="firebase_manager" output="screen"/>
+  <node pkg="asv_wave_sim_gazebo" type="gps_publisher.py" name="gps_publisher" output="screen" launch-prefix="bash -c 'sleep 10; $0'" />
+</launch>
