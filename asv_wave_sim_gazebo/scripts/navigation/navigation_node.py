@@ -43,15 +43,25 @@ class FirebaseNavigationNode:
 
     def get_navigation_points(self):
         """Retrieve navigation points from Firebase"""
-        ref_path = f'navigation/coverage_path_planning/-OPm38xF9Gi3hppOoN8k/waypoints'
         try:
+            # Get all coverage_path_planning entries
+            cpp_ref = db.reference('navigation/coverage_path_planning')
+            cpp_data = cpp_ref.get()
+            if not cpp_data or not isinstance(cpp_data, dict):
+                rospy.logwarn("No coverage_path_planning entries found in Firebase")
+                return None
+
+            # Get the latest key (assuming keys are sortable by recency)
+            latest_key = max(cpp_data.keys())
+            rospy.loginfo(f"Using latest coverage_path_planning key: {latest_key}")
+            ref_path = f'navigation/coverage_path_planning/{latest_key}/waypoints'
             ref = db.reference(ref_path)
             points_data = ref.get()
-            
+
             if not points_data:
                 rospy.logwarn("No navigation points found in Firebase")
                 return None
-            
+
             # Check if points_data is a list or dictionary
             points = []
             if isinstance(points_data, dict):
@@ -73,11 +83,11 @@ class FirebaseNavigationNode:
             else:
                 rospy.logerr("Unexpected data format for navigation points")
                 return None
-            
+
             # Print the first 5 points
             rospy.loginfo(f"First 5 points loaded: {points[:5]}")
             return points if points else None
-            
+
         except Exception as e:
             rospy.logerr(f"Error retrieving navigation points: {str(e)}")
             return None

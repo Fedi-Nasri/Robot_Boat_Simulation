@@ -14,7 +14,7 @@ class WasteTrackerNode:
         rospy.init_node('waste_tracker_node', anonymous=True)
         
         # Initialize YOLOv11 model
-        self.model = YOLO("/home/fedi/asv_ws/src/Robot_Boat_Simulation/asv_wave_sim_gazebo/scripts/camera/best.pt")  # Replace with your model path if using a custom model
+        self.model = YOLO("/home/fedi/asv_ws/src/Robot_Boat_Simulation/asv_wave_sim_gazebo/scripts/camera/light_best.onnx")  # Replace with your model path if using a custom model
         
         # Initialize CvBridge
         self.bridge = CvBridge()
