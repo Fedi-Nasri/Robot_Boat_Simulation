@@ -17,7 +17,7 @@ class FanController:
         self.clear_wrench = rospy.ServiceProxy('/gazebo/clear_body_wrenches', BodyRequest)
 
         # Maximum torque limit
-        self.max_torque = 1.0
+        self.max_torque = -0.5
         self.current_droit = 0.0
         self.current_gauche = 0.0
 

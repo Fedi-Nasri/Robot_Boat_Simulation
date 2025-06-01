@@ -1,0 +1,34 @@
+model {
+  file: "model.sdf"
+}
+name: "Threshold_Hand_Towel_Blue_Medallion_16_x_27"
+description: "Threshold Hand Towel, Blue Medallion, 16\" x 27\""
+version: 1
+authors {
+  name: "Google"
+  email: "scanned-objects@google.com"
+}
+legal {
+  copyright: "Copyright 2020 Google LLC."
+  license: "Creative Commons Attribution 4.0 International"
+}
+annotations {
+  key: "brand"
+  value: "Threshold"
+}
+annotations {
+  key: "gtin"
+  value: "00042075393663"
+}
+annotations {
+  key: "sku"
+  value: "00042075393663"
+}
+compatibilities {
+  name: "Gazebo"
+  version {
+    major: 11
+  }
+}
+categories {
+}

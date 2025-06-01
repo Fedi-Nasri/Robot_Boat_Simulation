@@ -1,0 +1,34 @@
+model {
+  file: "model.sdf"
+}
+name: "Threshold_Performance_Bath_Sheet_Sandoval_Blue_33_x_63"
+description: "Threshold Performance Bath Sheet, Sandoval Blue, 33\" x 63\""
+version: 1
+authors {
+  name: "Google"
+  email: "scanned-objects@google.com"
+}
+legal {
+  copyright: "Copyright 2020 Google LLC."
+  license: "Creative Commons Attribution 4.0 International"
+}
+annotations {
+  key: "brand"
+  value: "Threshold"
+}
+annotations {
+  key: "gtin"
+  value: "00490640901940"
+}
+annotations {
+  key: "sku"
+  value: "00490640901940"
+}
+compatibilities {
+  name: "Gazebo"
+  version {
+    major: 11
+  }
+}
+categories {
+}

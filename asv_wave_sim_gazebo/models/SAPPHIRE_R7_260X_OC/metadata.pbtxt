@@ -1,0 +1,34 @@
+model {
+  file: "model.sdf"
+}
+name: "SAPPHIRE_R7_260X_OC"
+description: "SAPPHIRE R7 260X OC\nSAPPHIRE 260X is a near perfect entry level gaming card. Delivering great MOBA performance this card uses 2GB of GDDR5 to deliver solid gaming for a low price."
+version: 1
+authors {
+  name: "Google"
+  email: "scanned-objects@google.com"
+}
+legal {
+  copyright: "Copyright 2020 Google LLC."
+  license: "Creative Commons Attribution 4.0 International"
+}
+annotations {
+  key: "brand"
+  value: "SAPPHIRE"
+}
+annotations {
+  key: "gtin"
+  value: "840777064214"
+}
+annotations {
+  key: "sku"
+  value: "11222-06-20G"
+}
+compatibilities {
+  name: "Gazebo"
+  version {
+    major: 11
+  }
+}
+categories {
+}

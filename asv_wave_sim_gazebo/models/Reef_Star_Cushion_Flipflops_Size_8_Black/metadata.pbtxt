@@ -1,0 +1,35 @@
+model {
+  file: "model.sdf"
+}
+name: "Reef_Star_Cushion_Flipflops_Size_8_Black"
+description: "Reef Star Cushion Flipflops, Size 8, Black"
+version: 1
+authors {
+  name: "Google"
+  email: "scanned-objects@google.com"
+}
+legal {
+  copyright: "Copyright 2020 Google LLC."
+  license: "Creative Commons Attribution 4.0 International"
+}
+annotations {
+  key: "brand"
+  value: "Reef"
+}
+annotations {
+  key: "gtin"
+  value: "00700053765061"
+}
+annotations {
+  key: "sku"
+  value: "00700053765061"
+}
+compatibilities {
+  name: "Gazebo"
+  version {
+    major: 11
+  }
+}
+categories {
+  first: "Shoe"
+}

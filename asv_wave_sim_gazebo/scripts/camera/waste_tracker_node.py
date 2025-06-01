@@ -7,6 +7,7 @@ from ultralytics import YOLO
 import cv2
 import numpy as np
 from collections import defaultdict
+from asv_wave_sim_gazebo.msg import WasteSection, WasteDetection
 
 class WasteTrackerNode:
     def __init__(self):
@@ -14,7 +15,7 @@ class WasteTrackerNode:
         rospy.init_node('waste_tracker_node', anonymous=True)
         
         # Initialize YOLOv11 model
-        self.model = YOLO("/home/fedi/asv_ws/src/Robot_Boat_Simulation/asv_wave_sim_gazebo/scripts/camera/light_best.onnx")  # Replace with your model path if using a custom model
+        self.model = YOLO("/home/fedi/asv_ws/src/asv_wave_sim/asv_wave_sim_gazebo/scripts/camera/light_best.onnx")  # Replace with your model path if using a custom model
         
         # Initialize CvBridge
         self.bridge = CvBridge()
@@ -41,6 +42,7 @@ class WasteTrackerNode:
         # Publishers
         self.waste_info_pub = rospy.Publisher('/waste_info', String, queue_size=10)
         self.waste_detected_pub = rospy.Publisher('/waste_detected', Bool, queue_size=10)
+        self.waste_detection_pub = rospy.Publisher('/waste_detection', WasteDetection, queue_size=10)
         
         # Subscriber
         self.image_sub = rospy.Subscriber('/camera/image_raw', Image, self.image_callback)
@@ -186,6 +188,17 @@ class WasteTrackerNode:
             waste_detected_msg = Bool()
             waste_detected_msg.data = waste_detected
             self.waste_detected_pub.publish(waste_detected_msg)
+            
+            # Publish structured waste detection message
+            waste_detection_msg = WasteDetection()
+            for section, data in section_data.items():
+                ws = WasteSection()
+                ws.section = section
+                ws.count = data['count']
+                ws.track_ids = data['track_ids']
+                # ws.coords removed: WasteSection no longer has coords
+                waste_detection_msg.sections.append(ws)
+            self.waste_detection_pub.publish(waste_detection_msg)
             
             # Draw section boundaries
             cv2.rectangle(frame, (0, 0), (self.left_width, self.frame_height), (0, 0, 255), 1)

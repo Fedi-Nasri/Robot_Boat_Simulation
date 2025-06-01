@@ -149,20 +149,26 @@
         </geometry>
       </visual>
       
-
+	<joint name="camera_optical_joint" type="fixed">
+        <parent link="camera_link"/>
+        <child link="camera_link_optical"/>
+        <origin xyz="0 0 0" rpy="${-pi/2} 0 ${-pi/2}"/>
+    </joint>
+    
       <!-- Added sensors -->
       <sensor name='camera_sensor' type='camera'>
+        <visualize>true</visualize>
         <update_rate>30</update_rate>
         <camera name='camera'>
-          <horizontal_fov>2.0944</horizontal_fov>
+           <horizontal_fov>1.0472</horizontal_fov>  <!-- angle de vue 60 est  : 1.0472 -->    <!-- angle de vue 120 est  : 2.0944 -->
           <image>
             <width>640</width>
             <height>480</height>
             <format>R8G8B8</format>
           </image>
           <clip>
-            <near>0.1</near>
-            <far>100</far>
+            <near>0.05</near>
+            <far>8.0</far>
           </clip>
         </camera>
         <plugin name='camera_controller' filename='libgazebo_ros_camera.so'>
@@ -178,7 +184,7 @@
       </sensor>
 
       <sensor name='lidar' type='ray'>
-        <visualize>1</visualize>
+        <visualize>0</visualize>
         <update_rate>40</update_rate>
         <ray>
           <scan>

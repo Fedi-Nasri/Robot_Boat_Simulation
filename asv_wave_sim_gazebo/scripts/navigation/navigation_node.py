@@ -7,6 +7,9 @@ from firebase_admin import db, credentials
 import firebase_admin
 import json
 import time
+import yaml  # Add this import/  pip install pyyaml 
+from std_msgs.msg import String  # Import String message type
+from gazebo_msgs.srv import ApplyBodyWrench, ApplyBodyWrenchRequest, BodyRequest
 
 class FirebaseNavigationNode:
     def __init__(self):
@@ -15,7 +18,11 @@ class FirebaseNavigationNode:
         # Get parameters
         self.robot_id = rospy.get_param('~robot_id', 'default_robot')
         self.firebase_url = rospy.get_param('~firebase_url', 'https://oceancleaner-741db-default-rtdb.firebaseio.com')
-        self.firebase_cred_path = rospy.get_param('~firebase_cred', '/home/fedi/asv_ws/credentials/oceancleaner-741db-firebase-adminsdk-fbsvc-776d874981.json')
+        self.firebase_cred_path = rospy.get_param('~firebase_cred', '/home/fedi/asv_ws/credinales/auth.json')
+        self.map_yaml_path = rospy.get_param('~map_yaml', '/home/fedi/asv_ws/src/asv_wave_sim/asv_wave_sim_gazebo/maps/map.yaml')  # Add param for yaml path
+
+        # Load map origin offsets from YAML
+        self.origin_offset_x, self.origin_offset_y = self.load_origin_offsets(self.map_yaml_path)
         
         # Initialize Firebase
         self.init_firebase()
@@ -26,8 +33,29 @@ class FirebaseNavigationNode:
         self.move_base_client.wait_for_server()
         rospy.loginfo("Connected to move_base action server")
         
+        # Publisher for navigation status
+        self.navigation_status_pub = rospy.Publisher('/navigation_status', String, queue_size=10)
+        # Subscribe to navigation control topic
+        rospy.Subscriber('/navigation_control', String, self.navigation_control_callback)
+        self.navigation_control_state = ''  # Default to pause
+        # Gazebo wrench services for stopping fans
+        rospy.wait_for_service('/gazebo/apply_body_wrench')
+        rospy.wait_for_service('/gazebo/clear_body_wrenches')
+        self.apply_wrench = rospy.ServiceProxy('/gazebo/apply_body_wrench', ApplyBodyWrench)
+        self.clear_wrench = rospy.ServiceProxy('/gazebo/clear_body_wrenches', BodyRequest)
         # Main loop
         self.navigation_loop()
+
+    def load_origin_offsets(self, yaml_path):
+        """Load origin offsets from a YAML map file"""
+        try:
+            with open(yaml_path, 'r') as f:
+                map_data = yaml.safe_load(f)
+            origin = map_data.get('origin')
+            return abs(float(origin[0])), abs(float(origin[1]))
+        except Exception as e:
+            rospy.logwarn(f"Failed to load map YAML: {e}. Using default offsets.")
+            return 75.0, 9.0  # Default values
 
     def init_firebase(self):
         """Initialize Firebase connection"""
@@ -94,12 +122,9 @@ class FirebaseNavigationNode:
 
     def send_goal(self, x, y):
         """Send navigation goal to move_base"""
-       
-        # Transform coordinates
-        origin_offset_x = 75.0  # Changed from the yaml file
-        origin_offset_y = 9.0   # Changed from the yaml file
-        x_transformed = x - origin_offset_x
-        y_transformed = y - origin_offset_y
+        # Transform coordinates using loaded offsets
+        x_transformed = x - self.origin_offset_x
+        y_transformed = y - self.origin_offset_y
        
         goal = MoveBaseGoal()
         goal.target_pose.header.frame_id = "map"
@@ -122,36 +147,71 @@ class FirebaseNavigationNode:
         
         return self.move_base_client.get_result()
 
+    def navigation_control_callback(self, msg):
+        if msg.data.lower() == 'pause':
+            self.navigation_control_state = 'pause'
+            rospy.loginfo('Navigation paused by controller.')
+        elif msg.data.lower() == 'navigate':
+            self.navigation_control_state = 'navigate'
+            rospy.loginfo('Navigation resumed by controller.')
+        else:
+            rospy.logwarn(f'Unknown navigation control command: {msg.data}')
+
+    def stop_fans(self):
+        """Stop the boat by clearing and setting both fan torques to 0 using Gazebo services."""
+        try:
+            # Clear and set torque to 0 for both fans
+            self.clear_wrench("boatcleaningc::fandroit")
+            self.clear_wrench("boatcleaningc::fangauche")
+            req_right = ApplyBodyWrenchRequest()
+            req_right.body_name = "boatcleaningc::fandroit"
+            req_right.reference_frame = "world"
+            req_right.wrench.torque.x = 0.0
+            req_right.duration = rospy.Duration(-1)
+            self.apply_wrench(req_right)
+            req_left = ApplyBodyWrenchRequest()
+            req_left.body_name = "boatcleaningc::fangauche"
+            req_left.reference_frame = "world"
+            req_left.wrench.torque.x = 0.0
+            req_left.duration = rospy.Duration(-1)
+            self.apply_wrench(req_left)
+            rospy.loginfo("[Navigation] Boat stopped: fan torques set to 0.")
+        except rospy.ServiceException as e:
+            rospy.logerr(f"[Navigation] Failed to stop fans: {e}")
+
     def navigation_loop(self):
         """Main navigation loop"""
         while not rospy.is_shutdown():
+            # Always check navigation control state before proceeding
+            while self.navigation_control_state != 'navigate' and not rospy.is_shutdown():
+                self.navigation_status_pub.publish('paused')
+                self.stop_fans()  # Stop the boat if paused
+                rospy.loginfo('Navigation is paused. Waiting for resume command...')
+                rospy.sleep(1)
+            self.navigation_status_pub.publish('navigating')
             points = self.get_navigation_points()
-            
             if not points:
                 rospy.loginfo("No points to navigate to. Waiting...")
                 rospy.sleep(5)
                 continue
-                
             for idx, (x, y) in enumerate(points, 1):
                 if rospy.is_shutdown():
                     return
-                    
+                # Check for pause before each goal
+                while self.navigation_control_state != 'navigate' and not rospy.is_shutdown():
+                    self.navigation_status_pub.publish('paused')
+                    self.stop_fans()  # Stop the boat if paused
+                    rospy.loginfo('Navigation paused before sending goal. Waiting for resume command...')
+                    rospy.sleep(1)
+                self.navigation_status_pub.publish('navigating')
                 rospy.loginfo(f"Navigating to point {idx}/{len(points)}: ({x}, {y})")
-                
                 result = self.send_goal(x, y)
-                
                 if result:
                     rospy.loginfo(f"Successfully reached point {idx}")
                 else:
                     rospy.logwarn(f"Failed to reach point {idx}")
-                    # Optionally: add retry logic here
-                
-                # Print the current point being processed
                 rospy.loginfo(f"Current point being processed: ({x}, {y})")
-                
-                # Small delay between points
                 rospy.sleep(1)
-            
             rospy.loginfo("Completed all navigation points. Waiting for new points...")
             rospy.sleep(10)  # Wait before checking for new points again
 
