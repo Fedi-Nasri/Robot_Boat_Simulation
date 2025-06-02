@@ -183,7 +183,7 @@ class FirebaseNavigationNode:
         """Main navigation loop"""
         while not rospy.is_shutdown():
             # Always check navigation control state before proceeding
-            while self.navigation_control_state != 'navigate' and not rospy.is_shutdown():
+            while self.navigation_control_state == 'pause' and not rospy.is_shutdown():
                 self.navigation_status_pub.publish('paused')
                 self.stop_fans()  # Stop the boat if paused
                 rospy.loginfo('Navigation is paused. Waiting for resume command...')

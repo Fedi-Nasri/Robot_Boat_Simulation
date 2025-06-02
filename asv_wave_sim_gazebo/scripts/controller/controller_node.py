@@ -68,12 +68,7 @@ class ControllerNode:
             self.navigation_control_pub.publish('navigate')
             self.collection_wait_start = None
             rospy.loginfo("[Controller] Resume navigation.")
-        # If waste is no longer detected and collection is complete, end collection and resume navigation
-        elif not self.waste_detected and self.collection_status == 'complete':
-            self.collection_control_pub.publish('end_collection')
-            self.navigation_control_pub.publish('navigate')
-            self.collection_wait_start = None
-            rospy.loginfo("[Controller] Resume navigation.")
+
 
 
     def run(self):
