@@ -10,6 +10,7 @@ import time
 import yaml  # Add this import/  pip install pyyaml 
 from std_msgs.msg import String  # Import String message type
 from gazebo_msgs.srv import ApplyBodyWrench, ApplyBodyWrenchRequest, BodyRequest
+from actionlib_msgs.msg import GoalStatus
 
 class FirebaseNavigationNode:
     def __init__(self):
@@ -37,12 +38,13 @@ class FirebaseNavigationNode:
         self.navigation_status_pub = rospy.Publisher('/navigation_status', String, queue_size=10)
         # Subscribe to navigation control topic
         rospy.Subscriber('/navigation_control', String, self.navigation_control_callback)
-        self.navigation_control_state = ''  # Default to pause
+        self.navigation_control_state = 'pause'  # Default to pause
         # Gazebo wrench services for stopping fans
         rospy.wait_for_service('/gazebo/apply_body_wrench')
         rospy.wait_for_service('/gazebo/clear_body_wrenches')
         self.apply_wrench = rospy.ServiceProxy('/gazebo/apply_body_wrench', ApplyBodyWrench)
         self.clear_wrench = rospy.ServiceProxy('/gazebo/clear_body_wrenches', BodyRequest)
+        
         # Main loop
         self.navigation_loop()
 
@@ -150,10 +152,14 @@ class FirebaseNavigationNode:
     def navigation_control_callback(self, msg):
         if msg.data.lower() == 'pause':
             self.navigation_control_state = 'pause'
-            rospy.loginfo('Navigation paused by controller.')
+            # Only cancel if goal is active
+            state = self.move_base_client.get_state()
+            if state not in [GoalStatus.SUCCEEDED, GoalStatus.ABORTED, GoalStatus.REJECTED, GoalStatus.PREEMPTED, GoalStatus.LOST]:
+                self.move_base_client.cancel_goal()
+            self.stop_fans()  # Immediately stop the boat
+            rospy.loginfo('Navigation paused: move_base goal cancelled and boat stopped.')
         elif msg.data.lower() == 'navigate':
             self.navigation_control_state = 'navigate'
-            rospy.loginfo('Navigation resumed by controller.')
         else:
             rospy.logwarn(f'Unknown navigation control command: {msg.data}')
 
@@ -186,7 +192,7 @@ class FirebaseNavigationNode:
             while self.navigation_control_state == 'pause' and not rospy.is_shutdown():
                 self.navigation_status_pub.publish('paused')
                 self.stop_fans()  # Stop the boat if paused
-                rospy.loginfo('Navigation is paused. Waiting for resume command...')
+                rospy.loginfo('Navigation is paused.')
                 rospy.sleep(1)
             self.navigation_status_pub.publish('navigating')
             points = self.get_navigation_points()
@@ -201,7 +207,7 @@ class FirebaseNavigationNode:
                 while self.navigation_control_state != 'navigate' and not rospy.is_shutdown():
                     self.navigation_status_pub.publish('paused')
                     self.stop_fans()  # Stop the boat if paused
-                    rospy.loginfo('Navigation paused before sending goal. Waiting for resume command...')
+                    rospy.loginfo('Navigation paused before sending goal.')
                     rospy.sleep(1)
                 self.navigation_status_pub.publish('navigating')
                 rospy.loginfo(f"Navigating to point {idx}/{len(points)}: ({x}, {y})")
@@ -212,6 +218,7 @@ class FirebaseNavigationNode:
                     rospy.logwarn(f"Failed to reach point {idx}")
                 rospy.loginfo(f"Current point being processed: ({x}, {y})")
                 rospy.sleep(1)
+
             rospy.loginfo("Completed all navigation points. Waiting for new points...")
             rospy.sleep(10)  # Wait before checking for new points again
 

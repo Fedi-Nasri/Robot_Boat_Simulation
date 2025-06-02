@@ -34,10 +34,10 @@ class ControllerNode:
         self.auto_ref.listen(self.firebase_auto_callback)
         self.waste_detected = False
         self.collection_status = 'pause'
-        self.navigation_status = 'navigate'
+        self.navigation_status = 'pause'
         self.collection_control_pub.publish('pause')
-        # Track when we started waiting for collection (for 20s timeout)
-        self.collection_wait_start = None
+        self.navigation_control_pub.publish('navigate')
+
 
         rospy.loginfo("Controller Node started and subscribed to all status topics.")
 
@@ -50,7 +50,7 @@ class ControllerNode:
     def control_logic(self):
         # Check auto mode from Firebase
         if not self.auto_mode:
-            self.collection_control_pub.publish('pause')
+            self.collection_control_pub.publish('end_collection')
             self.navigation_control_pub.publish('pause')
             self.webcontroler_pub.publish('resume')
             rospy.loginfo("[Controller] Manual mode: Pausing collection/navigation, resuming web control.")
@@ -62,11 +62,10 @@ class ControllerNode:
         if self.waste_detected :
             self.collection_control_pub.publish('start_collection')
             self.navigation_control_pub.publish('pause')
-            rospy.loginfo("[Controller] Start waste collection and pause navigation.")
+            rospy.loginfo("[Controller] Start waste collection and Pause navigation.")
         
-        elif not self.waste_detected and self.collection_status == 'pause':
+        elif not self.waste_detected or self.collection_status == 'pause':
             self.navigation_control_pub.publish('navigate')
-            self.collection_wait_start = None
             rospy.loginfo("[Controller] Resume navigation.")
 
 
