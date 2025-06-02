@@ -35,6 +35,7 @@ class ControllerNode:
         self.waste_detected = False
         self.collection_status = 'pause'
         self.navigation_status = 'navigate'
+        self.collection_control_pub.publish('pause')
         # Track when we started waiting for collection (for 20s timeout)
         self.collection_wait_start = None
 
@@ -62,6 +63,11 @@ class ControllerNode:
             self.collection_control_pub.publish('start_collection')
             self.navigation_control_pub.publish('pause')
             rospy.loginfo("[Controller] Start waste collection and pause navigation.")
+        
+        elif not self.waste_detected and self.collection_status == 'pause':
+            self.navigation_control_pub.publish('navigate')
+            self.collection_wait_start = None
+            rospy.loginfo("[Controller] Resume navigation.")
         # If waste is no longer detected and collection is complete, end collection and resume navigation
         elif not self.waste_detected and self.collection_status == 'complete':
             self.collection_control_pub.publish('end_collection')
