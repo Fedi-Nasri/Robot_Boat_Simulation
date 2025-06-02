@@ -68,21 +68,7 @@ class ControllerNode:
             self.navigation_control_pub.publish('navigate')
             self.collection_wait_start = None
             rospy.loginfo("[Controller] Resume navigation.")
-        # If collection is idle and no waste detected, wait up to 20s for a change, then force end_collection
-        if self.collection_status == 'idle' and not self.waste_detected:
-            self.collection_wait_start = rospy.Time.now()
-            while not (rospy.Time.now() - self.collection_wait_start).to_sec() > 10:
-                self.collection_control_pub.publish('end_collection')
-                self.navigation_control_pub.publish('navigate')
-                self.collection_wait_start = None
-                rospy.loginfo("[Controller] Collection idle for too long. Forcing resume navigation.")
-        # If collection is complete while waiting, end collection and resume navigation
-        if  self.collection_status == 'complete':
-            self.collection_control_pub.publish('end_collection')
-            self.navigation_control_pub.publish('navigate')
-            self.waiting_for_collection = False
-            self.collection_wait_start = None
-            rospy.loginfo("[Controller] Collection complete. Resume navigation.")
+
 
     def run(self):
         rate = rospy.Rate(2)  # 2 Hz

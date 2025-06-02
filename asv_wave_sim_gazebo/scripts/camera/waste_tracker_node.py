@@ -91,11 +91,13 @@ class WasteTrackerNode:
                 rospy.loginfo(f"Model class names: {results[0].names}")
                 self.class_names_printed = True
             
-            # Initialize section data
+            # Initialize section data with new upper middle split
             section_data = {
                 "Left": {"count": 0, "track_ids": [], "coords": []},
                 "Right": {"count": 0, "track_ids": [], "coords": []},
-                "Upper Middle": {"count": 0, "track_ids": [], "coords": []},
+                "Upper Middle Left": {"count": 0, "track_ids": [], "coords": []},
+                "Upper Middle Center": {"count": 0, "track_ids": [], "coords": []},
+                "Upper Middle Right": {"count": 0, "track_ids": [], "coords": []},
                 "Bottom Middle": {"count": 0, "track_ids": [], "coords": []}
             }
             
@@ -139,7 +141,16 @@ class WasteTrackerNode:
                             section = "Right"
                         else:
                             if center_y < self.upper_middle_height:
-                                section = "Upper Middle"
+                                # Split upper middle horizontally into 3: left, center, right
+                                um_width = self.right_x_start - self.left_width
+                                um_left = self.left_width + int(um_width * 0.2)
+                                um_right = self.right_x_start - int(um_width * 0.2)
+                                if center_x < um_left:
+                                    section = "Upper Middle Left"
+                                elif center_x > um_right:
+                                    section = "Upper Middle Right"
+                                else:
+                                    section = "Upper Middle Center"
                             else:
                                 section = "Bottom Middle"
                         
@@ -201,18 +212,28 @@ class WasteTrackerNode:
             self.waste_detection_pub.publish(waste_detection_msg)
             
             # Draw section boundaries
+            # Left
             cv2.rectangle(frame, (0, 0), (self.left_width, self.frame_height), (0, 0, 255), 1)
             cv2.putText(frame, "Left", (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), 2)
-            
+            # Right
             cv2.rectangle(frame, (self.right_x_start, 0), (self.frame_width, self.frame_height), (0, 0, 255), 1)
             cv2.putText(frame, "Right", (self.right_x_start + 10, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), 2)
-            
-            cv2.rectangle(frame, (self.left_width, 0), (self.right_x_start, self.upper_middle_height), (255, 0, 0), 1)
-            cv2.putText(frame, "Upper Middle", (self.left_width + 10, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 0, 0), 2)
-            
+            # Upper Middle split into three
+            um_width = self.right_x_start - self.left_width
+            um_left = self.left_width + int(um_width * 0.2)
+            um_right = self.right_x_start - int(um_width * 0.2)
+            # Upper Middle Left
+            cv2.rectangle(frame, (self.left_width, 0), (um_left, self.upper_middle_height), (255, 128, 0), 1)
+            cv2.putText(frame, "Upper Middle Left", (self.left_width + 5, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 128, 0), 2)
+            # Upper Middle Center
+            cv2.rectangle(frame, (um_left, 0), (um_right, self.upper_middle_height), (0, 128, 255), 1)
+            cv2.putText(frame, "Upper Middle Center", (um_left + 5, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 128, 255), 2)
+            # Upper Middle Right
+            cv2.rectangle(frame, (um_right, 0), (self.right_x_start, self.upper_middle_height), (255, 128, 0), 1)
+            cv2.putText(frame, "Upper Middle Right", (um_right + 5, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 128, 0), 2)
+            # Bottom Middle
             cv2.rectangle(frame, (self.left_width, self.upper_middle_height), (self.right_x_start, self.frame_height), (255, 0, 0), 1)
             cv2.putText(frame, "Bottom Middle", (self.left_width + 10, self.upper_middle_height + 30), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 0, 0), 2)
-            
             # Display frame
             cv2.imshow("YOLOv11 Waste Tracking", frame)
             cv2.waitKey(1)
