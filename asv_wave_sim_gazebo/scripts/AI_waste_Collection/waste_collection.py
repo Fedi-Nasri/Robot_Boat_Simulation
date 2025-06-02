@@ -35,6 +35,10 @@ class WasteCollectionNode:
         rospy.Subscriber('/waste_detection', WasteDetection, self.waste_detection_callback)
         
         rospy.loginfo("Waste Collection Node started")
+        
+        # this 2 line addded if tehre is any command still going to the gazebo {didint test it }
+        self.apply_torque(self.fan_right, 0.0)
+        self.apply_torque(self.fan_left, 0.0)
 
     def apply_torque(self, link_name, torque):
         """Apply torque to a specific fan"""

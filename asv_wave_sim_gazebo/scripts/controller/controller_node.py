@@ -35,7 +35,7 @@ class ControllerNode:
         self.waste_detected = False
         self.collection_status = 'pause'
         self.navigation_status = 'pause'
-        self.collection_control_pub.publish('pause')
+        self.collection_control_pub.publish('end_collection')
         self.navigation_control_pub.publish('navigate')
 
 
@@ -50,7 +50,7 @@ class ControllerNode:
     def control_logic(self):
         # Check auto mode from Firebase
         if not self.auto_mode:
-            self.collection_control_pub.publish('end_collection')
+            self.collection_control_pub.publish('pause')
             self.navigation_control_pub.publish('pause')
             self.webcontroler_pub.publish('resume')
             rospy.loginfo("[Controller] Manual mode: Pausing collection/navigation, resuming web control.")
@@ -64,7 +64,7 @@ class ControllerNode:
             self.navigation_control_pub.publish('pause')
             rospy.loginfo("[Controller] Start waste collection and Pause navigation.")
         
-        elif not self.waste_detected or self.collection_status == 'pause':
+        elif not self.waste_detected or self.collection_status == 'pause': #if you want to run both noeuds navigataion and collection  add  'and' not " OR " condition 
             self.navigation_control_pub.publish('navigate')
             rospy.loginfo("[Controller] Resume navigation.")
 

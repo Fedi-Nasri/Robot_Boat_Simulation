@@ -45,6 +45,10 @@ class FirebaseNavigationNode:
         self.apply_wrench = rospy.ServiceProxy('/gazebo/apply_body_wrench', ApplyBodyWrench)
         self.clear_wrench = rospy.ServiceProxy('/gazebo/clear_body_wrenches', BodyRequest)
         
+        # this 2 line addded if tehre is any command still going to the gazebo {didint test it }
+        self.stop_fans()
+        self.stop_fans()
+
         # Main loop
         self.navigation_loop()
 
